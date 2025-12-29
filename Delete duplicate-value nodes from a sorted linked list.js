@@ -64,12 +64,10 @@ function printSinglyLinkedList(node, sep, ws) {
 }
 
 /*
- * Complete the 'getNode' function below.
+ * Complete the 'removeDuplicates' function below.
  *
- * The function is expected to return an INTEGER.
- * The function accepts following parameters:
- *  1. INTEGER_SINGLY_LINKED_LIST llist
- *  2. INTEGER positionFromTail
+ * The function is expected to return an INTEGER_SINGLY_LINKED_LIST.
+ * The function accepts INTEGER_SINGLY_LINKED_LIST llist as parameter.
  */
 
 /*
@@ -82,27 +80,35 @@ function printSinglyLinkedList(node, sep, ws) {
  *
  */
 
-function getNode(llist, positionFromTail) {
-  let fast = llist;
-  let slow = llist;
-  // Cho fast đi trước positionFromTail bước
-  for (let i = 0; i < positionFromTail; i++) {
-    fast = fast.next;
+function removeDuplicates(llist) {
+  // Nếu list rỗng hoặc chỉ có 1 node
+  if (!llist || !llist.next) {
+    return llist;
   }
-  // Di chuyển cả 2 cùng lúc cho đến khi fast đến cuối
-  while (fast.next !== null) {
-    fast = fast.next;
-    slow = slow.next;
+
+  let current = llist;
+
+  // Duyệt qua từng node
+  while (current && current.next) {
+    // Nếu node hiện tại = node kế tiếp
+    if (current.data === current.next.data) {
+      // Bỏ qua node kế tiếp (trỏ thẳng sang node sau nó)
+      current.next = current.next.next;
+    } else {
+      // Khác nhau thì chuyển sang node tiếp
+      current = current.next;
+    }
   }
-  return slow.data;
+
+  return llist;
 }
 
 function main() {
   const ws = fs.createWriteStream(process.env.OUTPUT_PATH);
 
-  const tests = parseInt(readLine(), 10);
+  const t = parseInt(readLine(), 10);
 
-  for (let testsItr = 0; testsItr < tests; testsItr++) {
+  for (let tItr = 0; tItr < t; tItr++) {
     const llistCount = parseInt(readLine(), 10);
 
     let llist = new SinglyLinkedList();
@@ -112,11 +118,10 @@ function main() {
       llist.insertNode(llistItem);
     }
 
-    const position = parseInt(readLine(), 10);
+    let llist1 = removeDuplicates(llist.head);
 
-    let result = getNode(llist.head, position);
-
-    ws.write(result + "\n");
+    printSinglyLinkedList(llist1, " ", ws);
+    ws.write("\n");
   }
 
   ws.end();
