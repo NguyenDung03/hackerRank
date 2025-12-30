@@ -88,7 +88,6 @@ function removeDuplicates(llist) {
 
   let current = llist;
 
-  // Duyệt qua từng node
   while (current && current.next) {
     // Nếu node hiện tại = node kế tiếp
     if (current.data === current.next.data) {
